@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Products - RetailKart</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #1e293b;
+        }
+
+        /* NAVBAR */
+
+        .navbar {
+            background: #1e293b;
+            color: white;
+            padding: 18px 35px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+        /* PAGE */
+
+        .container {
+            width: 92%;
+            margin: 35px auto;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            font-size: 34px;
+            margin-bottom: 10px;
+        }
+
+        .page-title p {
+            color: #64748b;
+        }
+
+        /* PRODUCTS */
+
+        .products-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(240px, 1fr));
+
+            gap: 25px;
+        }
+
+        .product-card {
+
+            background: white;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 3px 12px rgba(0,0,0,0.08);
+
+            transition: 0.3s;
+        }
+
+        .product-card:hover {
+
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        /* IMAGE */
+
+        .product-image {
+
+            width: 100%;
+            height: 220px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background: #f8fafc;
+        }
+
+        .product-image img {
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: contain;
+
+            padding: 15px;
+        }
+
+        .no-image {
+
+            font-size: 60px;
+            color: #94a3b8;
+        }
+
+        /* PRODUCT DETAILS */
+
+        .product-details {
+
+            padding: 20px;
+        }
+
+        .product-details h3 {
+
+            font-size: 19px;
+
+            margin-bottom: 10px;
+        }
+
+        .description {
+
+            color: #64748b;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+            min-height: 42px;
+
+            margin-bottom: 12px;
+        }
+
+        .price {
+
+            font-size: 22px;
+
+            font-weight: bold;
+
+            color: #2563eb;
+
+            margin-bottom: 8px;
+        }
+
+        .stock {
+
+            font-size: 14px;
+
+            margin-bottom: 15px;
+        }
+
+        .in-stock {
+            color: #16a34a;
+        }
+
+        .out-stock {
+            color: #dc2626;
+        }
+
+        /* BUTTON */
+
+        .cart-button {
+
+            display: block;
+
+            width: 100%;
+
+            padding: 12px;
+
+            text-align: center;
+
+            background: #2563eb;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 6px;
+
+            font-weight: bold;
+        }
+
+        .cart-button:hover {
+
+            background: #1d4ed8;
+        }
+
+        .disabled-button {
+
+            display: block;
+
+            width: 100%;
+
+            padding: 12px;
+
+            text-align: center;
+
+            background: #cbd5e1;
+
+            color: #475569;
+
+            border-radius: 6px;
+
+            font-weight: bold;
+        }
+
+        /* EMPTY */
+
+        .empty {
+
+            text-align: center;
+
+            background: white;
+
+            padding: 50px;
+
+            border-radius: 10px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            .navbar {
+
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+            .nav-links {
+
+                flex-wrap: wrap;
+
+                justify-content: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            RetailKart
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/">Home</a>
+
+            <a href="/products">Products</a>
+
+            <a href="/cart">Cart</a>
+
+            <a href="/orders">My Orders</a>
+
+            <a href="/logout">Logout</a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- PRODUCTS -->
+
+    <div class="container">
+
+        <div class="page-title">
+
+            {% if category %}
+
+                <h1>{{ category }}</h1>
+
+                <p>
+                    Products in {{ category }} category
+                </p>
+
+            {% else %}
+
+                <h1>All Products</h1>
+
+                <p>
+                    Browse our available products
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        {% if products %}
+
+            <div class="products-grid">
+
+                {% for product in products %}
+
+                    <div class="product-card">
+
+
+                        <!-- PRODUCT IMAGE -->
+
+                        <div class="product-image">
+
+                            {% if product[6] %}
+
+                                <img
+                                    src="{{ product[6] }}"
+                                    alt="{{ product[2] }}"
+                                >
+
+                            {% else %}
+
+                                <div class="no-image">
+                                    🛍️
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- PRODUCT DETAILS -->
+
+                        <div class="product-details">
+
+                            <h3>
+                                {{ product[2] }}
+                            </h3>
+
+
+                            <p class="description">
+
+                                {{ product[3] }}
+
+                            </p>
+
+
+                            <div class="price">
+
+                                ₹{{ product[4] }}
+
+                            </div>
+
+
+                            {% if product[5] > 0 %}
+
+                                <div class="stock in-stock">
+
+                                    {{ product[5] }} items available
+
+                                </div>
+
+
+                                <a
+                                    href="/cart/add/{{ product[0] }}"
+                                    class="cart-button"
+                                >
+                                    Add to Cart 🛒
+                                </a>
+
+                            {% else %}
+
+                                <div class="stock out-stock">
+
+                                    Out of Stock
+
+                                </div>
+
+
+                                <div class="disabled-button">
+
+                                    Currently Unavailable
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty">
+
+                <h2>No Products Found</h2>
+
+                <p>
+                    There are currently no products
+                    in this category.
+                </p>
+
+                <br>
+
+                <a
+                    href="/products"
+                    class="cart-button"
+                >
+                    View All Products
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>
